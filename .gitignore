@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+
+logs/
+*.log
+
+config/*.yml
+!config/app_config.yml  # Keep app_config.yml but ignore others
+
+data/raw/
+data/processed/
+
+.env
+*.DS_Store
