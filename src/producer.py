@@ -39,7 +39,7 @@ def run_producer():
         crypto_data = fetch_crypto_data()
         producer.send('crypto-topic', crypto_data)
         print(f"Sent: {crypto_data}")
-        time.sleep(5)
+        time.sleep(30)
 
 if __name__ == "__main__":
     run_producer()

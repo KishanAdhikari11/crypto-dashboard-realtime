@@ -51,15 +51,4 @@ class CryptoDataTransformer:
         return df
     
     
-def transform_crypto_data(data_path):
-    """Transform crypto data from CSV file"""
-    df = pd.read_csv(data_path)
-    transformer = CryptoDataTransformer(df)
-    transformed_df = transformer.transform_all()
-    return transformed_df
 
-if __name__=="__main__":
-    datapath="data/crypto_data.csv"
-    df=transform_crypto_data(datapath)
-    df.to_csv("transformed.csv")
-    

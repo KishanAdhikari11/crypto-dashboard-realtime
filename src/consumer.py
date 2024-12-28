@@ -1,26 +1,9 @@
 from kafka import KafkaConsumer
 import json
 import pandas as pd
-import os
+from transform import CryptoDataTransformer
+from utils.database import store_data_in_postgres
 
-CSV_FILE_PATH = "data/crypto_data.csv"
-
-def ensure_data_directory():
-    os.makedirs(os.path.dirname(CSV_FILE_PATH), exist_ok=True)
-
-def save_to_csv(data):
-
-    if not isinstance(data, list):
-        data = [data]
-
-    df = pd.DataFrame(data)
-
-    ensure_data_directory()
-  
-    file_exists = os.path.isfile(CSV_FILE_PATH)
-
-    df.to_csv(CSV_FILE_PATH, mode="a", index=False, header=not file_exists)
-    print(f"Saved {len(data)} records to CSV at {CSV_FILE_PATH}")
 
 def run_consumer():
     consumer = KafkaConsumer(
@@ -35,8 +18,15 @@ def run_consumer():
     try:
         for message in consumer:
             crypto_data = message.value
+            
             if crypto_data: 
-                save_to_csv(crypto_data)
+                df=pd.DataFrame(crypto_data)
+                transformer=CryptoDataTransformer(df)
+                transformed_data=transformer.transform_all()
+                table_name = "cryptocurrency_data"
+                db_url = "postgresql+psycopg2://postgres:postgres@localhost:5432/crypto"
+                store_data_in_postgres(transformed_data, table_name, db_url)
+                print(f"Processed and stored {len(transformed_data)} records into PostgreSQL.")
     except KeyboardInterrupt:
         print("\nConsumer stopped by user")
     finally:
