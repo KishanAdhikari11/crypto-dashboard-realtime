@@ -1,7 +1,7 @@
 __pycache__/
 *.pyc
 
-logs/
+logs/O\
 *.log
 
 config/*.yml
@@ -9,6 +9,7 @@ config/*.yml
 
 data/raw/
 data/processed/
+dashboard/crypto_transformed.csv
 
 .env
 *.DS_Store
