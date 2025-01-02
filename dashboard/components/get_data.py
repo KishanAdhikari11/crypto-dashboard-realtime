@@ -14,7 +14,7 @@ def get_data_from_table(db_url,table_name,filter_conditions=None):
         engine=create_engine(db_url)
         query=f"SELECT * from {table_name}"
         if filter_conditions:
-            query+=f" Where {filter_conditions}"
+            query+=f"{filter_conditions}"
         df=pd.read_sql(query,engine)
         return df
     except Exception as e:
